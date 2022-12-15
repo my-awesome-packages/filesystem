@@ -27,9 +27,9 @@ class FileService implements ServiceContract
             if ($fileModel && Storage::put($fileModel->path, $file->openFile())) {
                 return $fileModel;
             }
-        });
 
-        throw new Exceptions\FileNotCreatedException();
+            throw new Exceptions\FileNotCreatedException();
+        });
     }
 
     public function delete(string $id): bool
@@ -59,11 +59,11 @@ class FileService implements ServiceContract
                 if ($this->fileRepository->update($id, $newFile) && Storage::put($model->path, $newFile->openFile())) {
                     return true;
                 }
-                
+
                 throw new Exceptions\FileNotUpdatedException();
             });
         }
-        
+
         return false;
     }
 
