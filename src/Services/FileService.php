@@ -24,7 +24,7 @@ class FileService implements ServiceContract
 
         return DB::transaction(function () use ($file, $path, $fileName) {
             $fileModel = $this->fileRepository->create($file, $path, $fileName);
-            if ($fileModel && Storage::put($fileModel->path, $file->openFile())) {
+            if ($fileModel && Storage::put($fileModel->path, $file->getContent())) {
                 return $fileModel;
             }
 
@@ -55,8 +55,8 @@ class FileService implements ServiceContract
     public function update(string $id, File $newFile): bool
     {
         if ($model = $this->getById($id)) {
-            return DB::transaction(function () use ($id, $newFile) {
-                if ($this->fileRepository->update($id, $newFile) && Storage::put($model->path, $newFile->openFile())) {
+            return DB::transaction(function () use ($id, $newFile, $model) {
+                if ($this->fileRepository->update($id, $newFile) && Storage::put($model->path, $file->getContent())) {
                     return true;
                 }
 
